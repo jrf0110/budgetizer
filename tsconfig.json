@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "module": "es2015",
+    "target": "es5",
+    "noImplicitAny": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "lib": [
+      "es2015",
+      "dom"
+    ],
+    "jsx": "react",
+    "jsxFactory": "h"
+  },
+  "include": [
+    "src/*.ts",
+    "src/**/*.ts",
+    "src/*.tsx",
+    "src/**/*.tsx",
+    "./src/lib/3p-types/navigo.d.ts",
+    "./node_modules/preact/dist/preact.d.ts",
+    "./node_modules/preact/src/preact.js"
+  ]
+}

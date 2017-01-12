@@ -1,0 +1,36 @@
+{
+  "name": "budgetizer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run build:typescript && npm run build:bundle",
+    "serve": "http-server -p 8000",
+    "watch": "npm run watch:pre && npm run build:watch & npm run serve",
+    "watch:pre": "mkdirp dist && node -e \"require('touch').sync('./dist/client.js')\"",
+    "build:less": "lessc src/less/core.less dist/client.css",
+    "build:typescript": "tsc -p tsconfig.json",
+    "build:bundle": "rollup --config rollup.config.js",
+    "build:watch": "npm run build:typescript:watch & npm run build:bundle:watch & npm run build:less:watch",
+    "build:typescript:watch": "npm run build:typescript -- -w",
+    "build:bundle:watch": "npm run build:bundle -- -w",
+    "build:less:watch": "watch \"npm run build:less\" src/less --interval=1"
+  },
+  "author": "John Fawcett",
+  "license": "ISC",
+  "devDependencies": {
+    "http-server": "^0.9.0",
+    "less": "^2.7.2",
+    "mkdirp": "^0.5.1",
+    "navigo": "^4.0.0",
+    "preact": "^7.1.0",
+    "rollup": "^0.41.1",
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "rollup-plugin-sourcemaps": "^0.4.1",
+    "rollup-watch": "^3.2.2",
+    "touch-cli": "0.0.1",
+    "typescript": "^2.2.0-dev.20170108",
+    "watch": "^1.0.1"
+  }
+}

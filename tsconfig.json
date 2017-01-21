@@ -4,7 +4,7 @@
     "target": "es5",
     "noImplicitAny": true,
     "preserveConstEnums": true,
-    "sourceMap": true,
+    "inlineSourceMap": true,
     "outDir": "./dist",
     "lib": [
       "es2015",

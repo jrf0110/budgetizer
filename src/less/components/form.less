@@ -1,0 +1,42 @@
+#components { #form {
+  .init(
+    @label-width: 144px
+  ) {
+    .form-group {
+      display: flex;
+      flex-direction: row;
+      flex: 1;
+
+      input {
+        order: 2;
+        flex: 1;
+        padding: 12px;
+        padding-left: @label-width;
+        box-sizing: border-box;
+        max-width: 100%;
+        border: none;
+        border-bottom: dotted 2px rgba(255, 255, 255, 0.5);
+        font-size: 16px;
+      }
+
+      label {
+        position: absolute;
+        display: inline-block;
+        width: @label-width;
+        box-sizing: border-box;
+        padding: 12px;
+        align-self: center;
+        order: 1;
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+
+      button {
+        padding: 12px;
+        width: 100%;
+        font-size: 16px;
+        border-width: 3px;
+      }
+    }
+  }
+}}

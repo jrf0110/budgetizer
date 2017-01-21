@@ -1,7 +1,25 @@
+@import "./themes.less";
+
 @import "./components/app.less";
+@import "./components/container.less";
+@import "./components/form.less";
 
 html, body {
-  
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
 }
 
-#components > #app > .init();
+.theme-dark-purple {
+  #themes > #dark-purple > .init();
+  .background();
+  .color();
+}
+
+#components > #container > .init();
+#components > #form > .init(
+
+);

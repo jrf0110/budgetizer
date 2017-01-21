@@ -20,18 +20,17 @@ export class Immutable {
   /**
    * Gets the current instance. If immutable is on, this returns
    * a clone. Otherwise, it returns `this`
-   * @return {Immutable} This or a new instance
+   * @return his or a new instance
    */
-  instance() {
+  instance(): this {
     return this._isImmutable ? this.clone() : this;
   }
 
   /**
    * Clone the current instance. It is expected that consumers
    * of this class override this method
-   * @return {Immutable}
    */
-  clone() {
+  clone(): this {
     return Immutable.create(this);
   }
 
@@ -40,7 +39,7 @@ export class Immutable {
    * to `this` rather than a new instance
    * @param handler The function that mutates
    */
-  mutate(handler: (instance: this) => void) {
+  mutate(handler: (instance: this) => void): this {
     var prev = this._isImmutable;
 
     this._isImmutable = false;

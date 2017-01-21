@@ -5,7 +5,7 @@ export default {
   entry: 'dist/client.js',
   dest: 'dist/client.bundle.js',
   format: 'iife',
-  sourceMap: true,
+  sourceMap: 'inline',
   plugins: [
     sourcemaps(),
     resolve({ jsnext: true, browser: true, }),

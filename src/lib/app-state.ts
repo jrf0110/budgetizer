@@ -2,14 +2,16 @@ import { ComponentConstructor } from 'preact'
 import { defaults, extend } from './utils'
 import { Immutable } from './immutable'
 import { TPage } from '../components/pages/base'
-import { User } from './user'
+import { User, IUserAttrs } from './user'
+import { Budgets, IBudgetsAttrs } from './budgets'
 import { Budget, IBudgetAttrs } from './budget'
 
 export interface IApplicationStateAttrs {
   page: TPage<any>
   user: User
-  budgets: Budget[]
+  budgets: Budgets
   pathname: string
+  routeParams: any
 }
 
 export class ApplicationState extends Immutable {
@@ -22,8 +24,15 @@ export class ApplicationState extends Immutable {
   constructor(attrs?: IApplicationStateAttrs) {
     super()
     this.attrs = <IApplicationStateAttrs> defaults(attrs || {}, ApplicationState.defaults)
-    this.attrs.user = this.attrs.user || new User()
-    this.attrs.budgets = this.attrs.budgets || []
+
+    if (!(this.attrs.user instanceof User)) {
+      this.attrs.user = new User(this.attrs.user)
+    }
+
+    console.log('got budgets', this.attrs.budgets)
+    if (!(this.attrs.budgets instanceof Budgets)) {
+      this.attrs.budgets = new Budgets(this.attrs.budgets)
+    }
   }
 
   setPage(page: TPage<any>): this {
@@ -38,27 +47,41 @@ export class ApplicationState extends Immutable {
     return this_
   }
 
-  createBudget() {
-    const this_ = this.instance()
-    this_.attrs.budgets.push(new Budget())
-    return this_
-  }
-
   editUser(handler: (user: User) => User) {
     const this_ = this.instance()
     this_.attrs.user = handler(this_.attrs.user)
     return this_
   }
 
-  addBudget(attrs: Partial<IBudgetAttrs> = {}) {
+  budgets(handler: (budgets: Budgets) => Budgets) {
     const this_ = this.instance()
-    this_.attrs.budgets = this_.attrs.budgets.slice(0)
-    this_.attrs.budgets.push(new Budget(attrs))
+    this_.attrs.budgets = handler(this_.attrs.budgets)
     return this_
+  }
+
+  getBudgetFromParams(): Budget {
+    return this.attrs.budgets.get(this.attrs.routeParams.id)
   }
 
   clone(): this {
     return ApplicationState.create(extend({}, this.attrs))
+  }
+
+  toJSON() {
+    return Object.keys(this.attrs)
+      .reduce((result, key: keyof IApplicationStateAttrs) => {
+        if (typeof this.attrs[key] === 'object' && typeof (<any> this.attrs[key]).toJSON === 'function') {
+          result[key] = (<any> this.attrs[key]).toJSON()
+        }
+
+        return result
+      }, <any> {})
+  }
+
+  merge(b: ApplicationState) {
+    const this_ = this.instance()
+    extend(this_.attrs, b.clone().attrs)
+    return this_
   }
 }
 

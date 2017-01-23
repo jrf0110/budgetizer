@@ -12,13 +12,18 @@ export class User extends Immutable {
 
   public attrs: IUserAttrs
 
-  constructor(attrs?: IUserAttrs) {
+  constructor(user?: User);
+  constructor(attrs?: IUserAttrs);
+  constructor(attrs?: any) {
     super()
-    this.attrs = <IUserAttrs> defaults(attrs || {}, User.defaults)
+    if (attrs instanceof User) {
+      this.attrs = attrs.clone().attrs
+    } else {
+      this.attrs = <IUserAttrs> defaults(attrs || {}, User.defaults)
+    }
   }
 
   update(attrs: Partial<IUserAttrs>) {
-    console.log('updating user', attrs)
     const this_ = this.instance()
     extend(this_.attrs, attrs)
     return this_
@@ -26,5 +31,9 @@ export class User extends Immutable {
 
   clone(): this {
     return User.create(extend({}, this.attrs))
+  }
+
+  toJSON() {
+    return this.attrs
   }
 }

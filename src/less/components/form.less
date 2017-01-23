@@ -6,6 +6,15 @@
       display: flex;
       flex-direction: row;
       flex: 1;
+      position: relative;
+
+      + .form-group {
+        margin-top: 12px;
+      }
+
+      input, label {
+        transition: 0.2s ease-out all;
+      }
 
       input {
         order: 2;
@@ -17,6 +26,10 @@
         border: none;
         border-bottom: dotted 2px rgba(255, 255, 255, 0.5);
         font-size: 16px;
+
+        &:focus {
+          padding-left: 12px;
+        }
       }
 
       label {
@@ -25,10 +38,21 @@
         width: @label-width;
         box-sizing: border-box;
         padding: 12px;
+        left: 0;
+        top: 0;
+        line-height: 0;
+        // TODO: Share sizing info
+        padding-top: 21px;
+        padding-bottom: 23px;
         align-self: center;
         order: 1;
         font-size: 12px;
         text-transform: uppercase;
+      }
+
+      :focus + label {
+        opacity: 0;
+        left: -@label-width;
       }
 
       button {
@@ -37,6 +61,25 @@
         font-size: 16px;
         border-width: 3px;
       }
+    }
+  }
+
+  .theme() {
+    input, textarea {
+      background: @bg-color-secondary;
+      border-color: fade(@text-color-primary, 50%);
+      color: @text-color-primary;
+    }
+
+    label {
+      color: fade(@text-color-primary, 50%);
+    }
+
+    button {
+      border-color: @bg-color-secondary;
+      background: rgba(0, 0, 0, 0.18);
+      color: #fff;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
     }
   }
 }}

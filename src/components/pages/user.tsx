@@ -1,5 +1,6 @@
 import { h, Component, ComponentProps,  } from 'preact'
 import { BasePageComponent, IBasePageComponentProps } from './base'
+import { BudgetList } from '../budget-list'
 import { USDValue } from '../../lib/usd-value'
 
 export interface IUserPageComponentState {
@@ -19,12 +20,14 @@ export class UserPageComponent extends BasePageComponent<IUserPageComponentState
     this.onNewBudgetInput = this.linkState('newBudgetName')
   }
 
-  shouldComponentUpdate(nextProps: IBasePageComponentProps) {
+  shouldComponentUpdate(nextProps: IBasePageComponentProps, nextState: IUserPageComponentState) {
     return nextProps.state.attrs.user !== this.props.state.attrs.user
+      || nextProps.state.attrs.budgets !== this.props.state.attrs.budgets
+      || nextState !== this.state
   }
 
   render() {
-    const { user } = this.props.state.attrs
+    const { user, budgets } = this.props.state.attrs
     const { newBudgetName } = this.state
 
     return (
@@ -33,7 +36,6 @@ export class UserPageComponent extends BasePageComponent<IUserPageComponentState
           <h1>User</h1>
           <form>
             <div className="form-group">
-              <label for="user-monthly-income">Monthly Income $</label>
               <input
                 type="number"
                 id="user-monthly-income"
@@ -41,28 +43,26 @@ export class UserPageComponent extends BasePageComponent<IUserPageComponentState
                 value={new USDValue(user.attrs.monthlyIncome).dollars()}
                 onChange={this.onMonthlyIncomeChange}
               />
+              <label for="user-monthly-income">Monthly Income $</label>
             </div>
           </form>
           <h2>Budgets</h2>
           <form onSubmit={this.onNewBudgetFormSubmit}>
             <div className="form-group">
-              <label for="user-create-new-budget">New Budget</label>
               <input
                 type="text"
                 id="user-create-new-budget"
                 name="newBudgetName"
                 value={newBudgetName}
+                onInput={this.onNewBudgetInput}
               />
+              <label for="user-create-new-budget">New Budget</label>
             </div>
             <div className="form-group">
               <button type="submit">Create new budget</button>
             </div>
           </form>
-          <ul class="budgets-list">
-            <li class="budget-list-item">
-              <a href="/budgets/general-savings">General Savings</a>
-            </li>
-          </ul>
+          <BudgetList budgets={budgets} />
         </div>
       </div>
     )
@@ -80,10 +80,11 @@ export class UserPageComponent extends BasePageComponent<IUserPageComponentState
 
   onNewBudgetFormSubmit(e: Event) {
     e.preventDefault()
+    
+    const name = this.state.newBudgetName
+    const { changeState } = this.props
 
-    this.props.changeState(state => {
-      return state.addBudget({ name: this.state.newBudgetName })
-    })
+    changeState(s => s.budgets(b => b.add({ name })))
 
     this.setState({ newBudgetName: '' })
   }

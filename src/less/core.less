@@ -3,6 +3,8 @@
 @import "./components/app.less";
 @import "./components/container.less";
 @import "./components/form.less";
+@import "./components/table-list.less";
+@import "./components/progress-bar.less";
 
 html, body {
   display: flex;
@@ -17,9 +19,13 @@ html, body {
   #themes > #dark-purple > .init();
   .background();
   .color();
+
+  #components > #form > .theme();
+  #components > #table-list > .theme();
+  #components > #progress-bar > .theme();
 }
 
 #components > #container > .init();
-#components > #form > .init(
-
-);
+#components > #form > .init();
+#components > #table-list > .init();
+#components > #progress-bar > .init();

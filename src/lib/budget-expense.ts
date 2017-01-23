@@ -2,9 +2,9 @@ import { defaults, extend } from './utils'
 import { Immutable } from './immutable'
 
 export interface IBudgetExpenseAttrs {
-  name: string
-  amount: number
-  date: Date
+  name?: string
+  amount?: number
+  date?: Date
 }
 
 export class BudgetExpense extends Immutable {
@@ -18,6 +18,7 @@ export class BudgetExpense extends Immutable {
   constructor(attrs?: IBudgetExpenseAttrs) {
     super()
     this.attrs = <IBudgetExpenseAttrs> defaults(attrs || {}, BudgetExpense.defaults)
+    this.attrs.date = this.attrs.date || new Date()
   }
 
   clone(): this {

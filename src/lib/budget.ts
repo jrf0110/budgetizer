@@ -1,8 +1,9 @@
-import { defaults, extend } from './utils'
+import { defaults, extend, uuid } from './utils'
 import { Immutable } from './immutable'
-import { BudgetExpense } from './budget-expense'
+import { BudgetExpense, IBudgetExpenseAttrs } from './budget-expense'
 
 export interface IBudgetAttrs {
+  id: string
   name: string
   amount: number
   expenses: BudgetExpense[]
@@ -19,6 +20,19 @@ export class Budget extends Immutable {
   constructor(attrs?: Partial<IBudgetAttrs>) {
     super()
     this.attrs = <IBudgetAttrs> defaults(attrs || {}, Budget.defaults)
+    this.attrs.id = this.attrs.id || uuid()
+    this.attrs.expenses = (this.attrs.expenses || [])
+      .map(expense => {
+        if (expense instanceof BudgetExpense) {
+          return expense.clone()
+        }
+
+        return new BudgetExpense(<any> expense)
+      })
+  }
+
+  getUrl() {
+    return `/budgets/${this.attrs.id}`
   }
 
   getTotalExpendituresForMonth(month: number) {
@@ -31,9 +45,19 @@ export class Budget extends Immutable {
       }, 0)
   }
 
+  addExpenditure(attrs: Partial<IBudgetExpenseAttrs>) {
+    const this_ = this.instance()
+    this_.attrs.expenses.push(new BudgetExpense(attrs))
+    return this_
+  }
+
   clone(): this {
     return Budget.create(extend({}, this.attrs, {
       expenses: this.attrs.expenses.map(expense => expense.clone())
     }))
+  }
+
+  toJSON() {
+    return extend({}, this.attrs)
   }
 }

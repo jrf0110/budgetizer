@@ -5,8 +5,9 @@ import { AppComponent, IAppComponentProps } from './components/app'
 import { HomePageComponent } from './components/pages/home'
 import { TestPageComponent } from './components/pages/test'
 import { UserPageComponent } from './components/pages/user'
+import { BudgetPageComponent } from './components/pages/budget'
 import { ApplicationState, TStateChanger } from './lib/app-state'
-import { defaults } from './lib/utils'
+import { defaults, debounce } from './lib/utils'
 import { domready } from './lib/domready'
 
 interface IClientAppOptions {
@@ -26,6 +27,7 @@ class ClientApp {
   public state: ApplicationState
   public router: Navigo
   public changeState: (handler: TStateChanger) => void
+  public debouncedSaveState: any
 
   constructor(window: Window, options = {}) {
     this.window = window
@@ -36,7 +38,7 @@ class ClientApp {
       .on(() => {
         console.log('/')
         this.changeState(state => state.clone().mutate(state => {
-          state.setPage(HomePageComponent)
+          state.setPage(UserPageComponent)
           state.setPath('/')
         }))
       })
@@ -45,6 +47,14 @@ class ClientApp {
         this.changeState(state => state.clone().mutate(state => {
           state.setPage(UserPageComponent)
           state.setPath('/user')
+        }))
+      })
+      .on('/budgets/:id', params => {
+        console.log(`/budgets/${params.id}`)
+        this.changeState(state => state.clone().mutate(state => {
+          state.setPage(BudgetPageComponent)
+          state.setPath(this.window.location.pathname)
+          state.attrs.routeParams = params
         }))
       })
       .on('/test', () => {
@@ -62,8 +72,10 @@ class ClientApp {
       console.log('state change', this.state)
 
       this.render()
+      this.debouncedSaveState()
     }
 
+    this.debouncedSaveState = debounce(this.saveToLocalStorage, 1000).bind(this)
     this.onDOMReady = this.onDOMReady.bind(this)
     this.onDOMClick = this.onDOMClick.bind(this)
   }
@@ -87,16 +99,33 @@ class ClientApp {
   }
 
   init() {
+    try {
+      const localStateStr = this.window.localStorage.getItem('budgetizer.state')
+      const localState = JSON.parse(localStateStr)
+
+      this.changeState(state => {
+        return state.merge(new ApplicationState(localState))
+      })
+    } catch (e) {
+      
+    }
+
     domready(this.window, this.onDOMReady)
     this.router.resolve()
   }
 
-  stop() {
+  saveToLocalStorage() {
+    this.window.localStorage
+      .setItem('budgetizer.state', JSON.stringify(this.state.toJSON()))
+  }
 
+  stop() {
+    
   }
 
   onDOMReady() {
     this.renderTarget = this.window.document.querySelector(this.options.renderTargetSelector)
+    this.window.document.addEventListener('click', this.onDOMClick)
     this.render()
   }
 

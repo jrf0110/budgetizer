@@ -13,7 +13,8 @@ export class BudgetList extends Component<IBudgetListProps, Object> {
         {props.budgets.attrs.budgets.map((budget, i) => {
           return (
             <li class="budget-list-item table-list-item" key={budget.attrs.id}>
-              <a href={budget.getUrl()}>{budget.attrs.name}</a>
+              <a className="table-list-item-col"
+                href={budget.getUrl()}>{budget.attrs.name}</a>
             </li>
           )
         })}

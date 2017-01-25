@@ -5,6 +5,7 @@
 @import "./components/form.less";
 @import "./components/table-list.less";
 @import "./components/progress-bar.less";
+@import "./components/expense-creator.less";
 
 html, body {
   display: flex;
@@ -23,9 +24,30 @@ html, body {
   #components > #form > .theme();
   #components > #table-list > .theme();
   #components > #progress-bar > .theme();
+  #components > #expense-creator > .theme();
+
+  .budget-expenses-list {
+    color: @text-color-muted;
+    .budget-expenses-list-item-name {
+      color: fade(@text-color-muted, 80%);
+    }
+  }
 }
 
 #components > #container > .init();
 #components > #form > .init();
 #components > #table-list > .init();
 #components > #progress-bar > .init();
+#components > #expense-creator > .init();
+
+.expense-creator-container {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+}
+
+.budget-expenses-list {
+  margin-top: 12px;
+  font-size: 14px;
+}

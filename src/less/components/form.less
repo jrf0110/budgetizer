@@ -2,6 +2,16 @@
   .init(
     @label-width: 144px
   ) {
+    input {
+      flex: 1;
+      padding: 12px;
+      box-sizing: border-box;
+      max-width: 100%;
+      border: none;
+      border-bottom: dotted 2px;
+      font-size: 16px;
+    }
+    
     .form-group {
       display: flex;
       flex-direction: row;
@@ -18,14 +28,7 @@
 
       input {
         order: 2;
-        flex: 1;
-        padding: 12px;
         padding-left: @label-width;
-        box-sizing: border-box;
-        max-width: 100%;
-        border: none;
-        border-bottom: dotted 2px rgba(255, 255, 255, 0.5);
-        font-size: 16px;
 
         &:focus {
           padding-left: 12px;

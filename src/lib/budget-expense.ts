@@ -1,10 +1,11 @@
-import { defaults, extend } from './utils'
+import { defaults, extend, uuid } from './utils'
 import { Immutable } from './immutable'
 
 export interface IBudgetExpenseAttrs {
   name?: string
   amount?: number
   date?: Date
+  id?: string
 }
 
 export class BudgetExpense extends Immutable {
@@ -18,10 +19,15 @@ export class BudgetExpense extends Immutable {
   constructor(attrs?: IBudgetExpenseAttrs) {
     super()
     this.attrs = <IBudgetExpenseAttrs> defaults(attrs || {}, BudgetExpense.defaults)
-    this.attrs.date = this.attrs.date || new Date()
+    this.attrs.date = this.attrs.date ? new Date(this.attrs.date) : new Date()
+    this.attrs.id = this.attrs.id || uuid()
   }
 
   clone(): this {
     return BudgetExpense.create(extend({}, this.attrs))
+  }
+
+  toJSON() {
+    return extend({}, this.attrs)
   }
 }

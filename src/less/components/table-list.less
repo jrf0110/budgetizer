@@ -3,21 +3,30 @@
 
   ) {
     .table-list {
+      display: table;
+      width: 100%;
       list-style: none;
       margin: 0;
       padding: 0;
     }
 
-    .table-list a {
-      display: block;
+    .table-list-item {
+      display: table-row;
+    }
+
+    .table-list-item-col {
+      display: table-cell;
       padding: 12px;
       border-bottom: solid 1px;
+    }
+
+    .table-list a {
       text-decoration: none;
     }
   }
 
   .theme() {
-    .table-list a {
+    .table-list .table-list-item-col {
       background: @bg-color-primary;
       border-color: @bg-color-secondary;
       color: @text-color-primary;

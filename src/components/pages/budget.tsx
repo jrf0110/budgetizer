@@ -3,6 +3,9 @@ import { BasePageComponent, IBasePageComponentProps } from './base'
 import { Budget, IBudgetAttrs } from '../../lib/budget'
 import { USDValue } from '../../lib/usd-value'
 import { ProgressBar, IProgressBarProps } from '../progress-bar'
+import { ExpenseCreator, IExpenseCreatorProps } from '../expense-creator'
+import { BudgetExpenseList } from '../budget-expense-list'
+import { BudgetExpense, IBudgetExpenseAttrs } from '../../lib/budget-expense'
 
 export interface IBudgetPageComponentState {
   
@@ -16,6 +19,7 @@ export class BudgetPageComponent extends BasePageComponent<IBudgetPageComponentS
     super(props)
     this.budget = this.props.state.getBudgetFromParams()
     this.onBudgetAmountChange = this.onBudgetAmountChange.bind(this)
+    this.onCreateExpenseRequest = this.onCreateExpenseRequest.bind(this)
   }
 
   componentWillReceiveProps(nextProps: IBasePageComponentProps) {
@@ -47,11 +51,19 @@ export class BudgetPageComponent extends BasePageComponent<IBudgetPageComponentS
             />
             <label>Amount $</label>
           </div>
-          <div style={{ 'margin-top': '100px' }}>
+          <div className="form-group">
             <ProgressBar
               total={budget.attrs.amount}
               current={current}
              >${new USDValue(remaining).dollars()} / ${amountDollars}</ProgressBar>
+          </div>
+        </div>
+        <BudgetExpenseList expenses={budget.attrs.expenses} />
+        <div className="expense-creator-container">
+          <div className="container">
+            <ExpenseCreator
+              onCreateExpenseRequest={this.onCreateExpenseRequest}
+            />
           </div>
         </div>
       </div>
@@ -67,6 +79,16 @@ export class BudgetPageComponent extends BasePageComponent<IBudgetPageComponentS
           return budget.mutate(budget => {
             budget.attrs.amount = new USDValue().dollars(el.value).toPennies()
           })
+        })
+      })
+    })
+  }
+
+  onCreateExpenseRequest(attrs: IBudgetExpenseAttrs) {
+    this.props.changeState(state => {
+      return state.budgets(budgets => {
+        return budgets.update(this.budget.attrs.id, budget => {
+          return budget.addExpenditure(attrs)
         })
       })
     })

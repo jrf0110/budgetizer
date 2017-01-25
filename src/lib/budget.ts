@@ -35,11 +35,15 @@ export class Budget extends Immutable {
     return `/budgets/${this.attrs.id}`
   }
 
-  getTotalExpendituresForMonth(month: number) {
+  getExpendituresForMonth(month: number): BudgetExpense[] {
     return this.attrs.expenses
       .filter(expense => {
         return expense.attrs.date.getMonth() === month
       })
+  }
+
+  getTotalExpendituresForMonth(month: number) {
+    return this.getExpendituresForMonth(month)
       .reduce<number>((total, expense) => {
         return total + expense.attrs.amount
       }, 0)
@@ -58,6 +62,8 @@ export class Budget extends Immutable {
   }
 
   toJSON() {
-    return extend({}, this.attrs)
-  }
+    return extend({}, this.attrs, {
+      expenses: this.attrs.expenses.map(expense => expense.toJSON())
+    })
+  } 
 }

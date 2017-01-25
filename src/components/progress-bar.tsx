@@ -30,7 +30,7 @@ export class ProgressBar extends Component<IProgressBarProps, Object> {
     ]
     .map(tuple => denormalize.apply(null, tuple))
     .map((x, i) => i < 3 ? parseInt(x, 10) : parseFloat(x)) as RGBA
-  console.log(resultColor)  
+
     return (
       <div className="progress-bar progress-bar-centered-text">
         <div

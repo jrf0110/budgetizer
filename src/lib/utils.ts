@@ -79,3 +79,16 @@ export const normalize =
 // The reverse of normalize
 export const denormalize =
   (x: number, MIN: number, MAX: number): number => x * (MAX - MIN) + MIN
+
+
+export type TLinkStateType = 'text' | 'number'
+export const stateLinkerTypes = {
+  text: (val: string) => val,
+  number: (val: string) => +val,
+}
+export function linkState(field: string, type: TLinkStateType = 'text') {
+  return function(e: Event) {
+    const value = (<HTMLInputElement> e.target).value
+    this.setState({ [field]: stateLinkerTypes[type](value) })
+  }
+}

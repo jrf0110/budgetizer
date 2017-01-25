@@ -36,21 +36,25 @@ class ClientApp {
 
     this.router = new Navigo()
       .on(() => {
-        console.log('/')
         this.changeState(state => state.clone().mutate(state => {
           state.setPage(UserPageComponent)
           state.setPath('/')
         }))
       })
       .on('/user', () => {
-        console.log('/user')
         this.changeState(state => state.clone().mutate(state => {
           state.setPage(UserPageComponent)
           state.setPath('/user')
         }))
       })
       .on('/budgets/:id', params => {
-        console.log(`/budgets/${params.id}`)
+        this.changeState(state => state.clone().mutate(state => {
+          state.setPage(BudgetPageComponent)
+          state.setPath(this.window.location.pathname)
+          state.attrs.routeParams = params
+        }))
+      })
+      .on('/budgets/:id/:date', params => {
         this.changeState(state => state.clone().mutate(state => {
           state.setPage(BudgetPageComponent)
           state.setPath(this.window.location.pathname)
@@ -58,7 +62,6 @@ class ClientApp {
         }))
       })
       .on('/test', () => {
-        console.log('/test')
         this.state = this.state.setPage(TestPageComponent)
       })
 

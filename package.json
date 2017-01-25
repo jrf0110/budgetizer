@@ -23,6 +23,7 @@
     "express": "^4.14.0",
     "http-server": "^0.9.0",
     "less": "^2.7.2",
+    "less-plugin-autoprefix": "^1.5.1",
     "mkdirp": "^0.5.1",
     "navigo": "^4.0.0",
     "preact": "^7.1.0",
@@ -38,7 +39,6 @@
     "@types/assert": "0.0.31",
     "@types/node": "^7.0.0",
     "assert": "^1.4.1",
-    "less-plugin-autoprefix": "^1.5.1",
     "mocha": "^3.2.0"
   }
 }

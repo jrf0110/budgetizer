@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm run build:typescript && npm run build:bundle",
+    "build": "npm run build:less & npm run build:typescript && npm run build:bundle",
     "serve": "http-server -p 8000",
     "watch": "npm run watch:pre && npm run build:watch & npm run serve",
     "watch:pre": "mkdirp dist && node -e \"require('touch').sync('./dist/client.js')\"",
-    "build:less": "lessc src/less/core.less dist/client.css",
+    "build:less": "lessc src/less/core.less dist/client.css --autoprefix=\"last 2 version\"",
     "build:typescript": "tsc -p tsconfig.json",
     "build:bundle": "rollup --config rollup.config.js",
     "build:watch": "npm run build:typescript:watch & npm run build:bundle:watch & npm run build:less:watch",
@@ -38,6 +38,7 @@
     "@types/assert": "0.0.31",
     "@types/node": "^7.0.0",
     "assert": "^1.4.1",
+    "less-plugin-autoprefix": "^1.5.1",
     "mocha": "^3.2.0"
   }
 }

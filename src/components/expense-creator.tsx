@@ -17,6 +17,8 @@ export class ExpenseCreator extends Component<IExpenseCreatorProps, IExpenseCrea
   constructor(props: IExpenseCreatorProps) {
     super(props)
 
+    this.state = { text: '' }
+
     this.onTextInput = linkState('text', 'text').bind(this)
     this.onSubmit = this.onSubmit.bind(this)
   }
@@ -28,6 +30,7 @@ export class ExpenseCreator extends Component<IExpenseCreatorProps, IExpenseCrea
           <input
             type="text"
             placeholder="20 lunch"
+            value={this.state.text}
             onInput={this.onTextInput}
           />
         </div>
@@ -52,5 +55,6 @@ export class ExpenseCreator extends Component<IExpenseCreatorProps, IExpenseCrea
   onSubmit(e: Event) {
     e.preventDefault()
     this.props.onCreateExpenseRequest(this.getAttrsFromState())
+    this.setState({ text: '' })
   }
 }

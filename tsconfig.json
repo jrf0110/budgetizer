@@ -19,7 +19,6 @@
     "src/*.tsx",
     "src/**/*.tsx",
     "./src/lib/3p-types/navigo.d.ts",
-    "./node_modules/preact/dist/preact.d.ts",
-    "./node_modules/preact/src/preact.js"
+    "./node_modules/preact/dist/preact.d.ts"
   ]
 }

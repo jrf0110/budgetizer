@@ -1,10 +1,11 @@
 @palette-white: #fff;
 @palette-dark-purple: #221c29;
+@palette-light-purple: #38323E;
 
 #themes { #dark-purple {
   .init() {
     @bg-color-primary: @palette-dark-purple;
-    @bg-color-secondary: fade(@text-color-primary, 10%);
+    @bg-color-secondary: @palette-light-purple;
     @text-color-primary: @palette-white;
     @text-color-muted: fade(@text-color-primary, 80%);
     @accent-gradient-1: linear-gradient(to right, #fcc4f8 0%,#5626a8 99%);

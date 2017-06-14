@@ -2,6 +2,10 @@
   .init(
     @label-width: 144px
   ) {
+    input, button, textarea {
+      border-radius: 0;
+    }
+
     input {
       flex: 1;
       padding: 12px;
@@ -63,6 +67,7 @@
         width: 100%;
         font-size: 16px;
         border-width: 3px;
+        border-style: solid;
       }
     }
   }
@@ -80,7 +85,7 @@
 
     button {
       border-color: @bg-color-secondary;
-      background: rgba(0, 0, 0, 0.18);
+      background: darken(@bg-color-primary, 3%);
       color: #fff;
       text-shadow: 0 1px 2px rgba(0,0,0,0.5);
     }
